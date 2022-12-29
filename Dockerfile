@@ -31,7 +31,7 @@ RUN cd /tmp/rtorrent && autoreconf --install && ./configure --with-xmlrpc-c && m
   && make install DESTDIR=/tmp/artifacts && cd /tmp/
 
 # Runtime stage
-FROM alpine:3.6
+FROM alpine:3.17
 
 # Install runtime dependencies
 RUN apk add --update \
@@ -40,6 +40,7 @@ RUN apk add --update \
   libcurl \
   zlib \
   ncurses-libs \
+  openssl \
   xmlrpc-c
 
 # Copy the build artifacts from the builder stage.
