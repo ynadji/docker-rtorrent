@@ -1,4 +1,4 @@
-FROM alpine:3.6 as builder
+FROM alpine:3.17 as builder
 
 # Install build dependencies
 RUN apk add --update \
@@ -7,12 +7,13 @@ RUN apk add --update \
   git \
   libtool \
   automake \
-  autoconf \
+  autoconf-archive \
   cppunit-dev \
   curl-dev \
   zlib-dev \
   ncurses-dev \
-  libressl-dev \
+  openssl-dev \
+  pkgconfig \
   binutils \
   linux-headers \
   xmlrpc-c-dev
@@ -21,12 +22,12 @@ WORKDIR /tmp/
 
 # Build libtorrent and install into builder stage.
 RUN git clone https://github.com/rakshasa/libtorrent.git
-RUN cd /tmp/libtorrent && ./autogen.sh && ./configure && make && make install \
+RUN cd /tmp/libtorrent && autoreconf --install && ./configure && make && make install \
   && make install DESTDIR=/tmp/artifacts && cd /tmp/
 
 # Build rTorrent and install into builder stage.
 RUN git clone https://github.com/rakshasa/rtorrent.git
-RUN cd /tmp/rtorrent && ./autogen.sh && ./configure --with-xmlrpc-c && make \
+RUN cd /tmp/rtorrent && autoreconf --install && ./configure --with-xmlrpc-c && make \
   && make install DESTDIR=/tmp/artifacts && cd /tmp/
 
 # Runtime stage
