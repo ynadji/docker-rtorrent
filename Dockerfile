@@ -41,6 +41,7 @@ RUN apk add --update \
   zlib \
   ncurses-libs \
   openssl \
+  python3 \
   xmlrpc-c
 
 # Copy the build artifacts from the builder stage.
